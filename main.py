@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import re
 import requests
+from bs4 import BeautifulSoup
 
 
 def down_html():
@@ -42,12 +43,17 @@ def other():
     word = input("请输入图片名: ")
     url = 'https://natalie.mu/music/gallery/news/408303/1499999'
     result = requests.get(url, headers=headers)
-    regex = ''
-    dowmload_pic(result.text, word, regex)
+    soup = BeautifulSoup(result.text, 'html.parser')
+    soup_result = soup.select(".GAE_galleryListImage img").__str__()
+    regex = 'data-src="(.*?)\?'
+    # pic_url = re.findall(regex, soup_result, re.S)
+    # print(pic_url)
+    dowmload_pic(soup_result, word, regex)
 
 
 if __name__ == '__main__':
     headers = {
         'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Mobile Safari/537.36 Edg/87.0.664.57'}
-    down_html()
+    # down_html()
     # baidu()
+    other()
