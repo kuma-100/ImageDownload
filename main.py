@@ -11,10 +11,10 @@ def down_html():
     fp.close()
 
 
-def dowmload_pic(html, keyword):
-    pic_url = re.findall('"objURL":"(.*?)",', html, re.S)
+def dowmload_pic(html, word, regex):
+    pic_url = re.findall(regex, html, re.S)
     i = 1
-    print('找到关键词:' + keyword + '的图片，现在开始下载图片...')
+    print('找到关键词:' + word + '的图片，现在开始下载图片...')
     for each in pic_url:
         print('正在下载第' + str(i) + '张图片，图片地址:' + str(each))
         try:
@@ -23,7 +23,7 @@ def dowmload_pic(html, keyword):
             print('【错误】当前图片无法下载')
             continue
 
-        dir = './images/' + keyword + '_' + str(i) + '.jpg'
+        dir = './images/' + word + '_' + str(i) + '.jpg'
         fp = open(dir, 'wb')
         fp.write(pic.content)
         fp.close()
@@ -31,14 +31,19 @@ def dowmload_pic(html, keyword):
 
 
 def baidu():
-    word = input("Input key word: ")
+    word = input("请输入百度搜图名: ")
     url = 'http://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word=' + word + '&ct=201326592&v=flip'
     result = requests.get(url, headers=headers)
-    dowmload_pic(result.text, word)
+    regex = '"objURL":"(.*?)",'
+    dowmload_pic(result.text, word, regex)
 
 
 def other():
+    word = input("请输入图片名: ")
     url = 'https://natalie.mu/music/gallery/news/408303/1499999'
+    result = requests.get(url, headers=headers)
+    regex = ''
+    dowmload_pic(result.text, word, regex)
 
 
 if __name__ == '__main__':
