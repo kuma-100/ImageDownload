@@ -2,6 +2,7 @@
 import re
 import requests
 from bs4 import BeautifulSoup
+from pathlib import Path  # 关于文件路径操作的库，这里主要为了得到图片后缀名
 
 
 def down_html():
@@ -23,8 +24,11 @@ def dowmload_pic(html, word, regex):
         except requests.exceptions.ConnectionError:
             print('【错误】当前图片无法下载')
             continue
-
-        dir = './images/' + word + '_' + str(i) + '.jpg'
+        # 设置Path变量，为了使用Pahtlib库中的方法提取后缀名
+        p = Path(each)
+        # 得到后缀，返回的是如 '.jpg'
+        p_suffix = p.suffix
+        dir = './images/' + word + '_' + str(i) + p_suffix
         fp = open(dir, 'wb')
         fp.write(pic.content)
         fp.close()
