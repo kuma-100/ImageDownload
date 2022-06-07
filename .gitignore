@@ -1,2 +1,5 @@
-/html.txt
+*.txt
+*.xlsx
+*.html
+.idea
 /images/
